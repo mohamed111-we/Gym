@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_gym_member" model="ir.actions.report">
+        <field name="name">Member Report</field>
+        <field name="model">gym.member</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gym.gym_member_report_template</field>
+        <field name="report_file">gym.gym_member_report_template</field>
+        <field name="binding_model_id" ref="gym.model_gym_member"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="gym_member_report_template">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="member">
+                <div class="page">
+                    <h2>Gym Member Report</h2>
+                    <style>
+                        table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                        }
+
+                        table, th, td {
+                        border: 1px solid #ddd;
+                        }
+
+                        th {
+                        background-color: #f4f4f4;
+                        color: #333;
+                        padding: 8px;
+                        text-align: center;
+                        }
+
+                        td {
+                        padding: 8px;
+                        text-align: left;
+                        }
+
+                        .section-title {
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #333;
+                        margin-top: 20px;
+                        margin-bottom: 10px;
+                        }
+
+                        .page {
+                        padding: 20px;
+                        border: 1px solid #ddd;
+                        border-radius: 10px;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .member-info {
+                        font-size: 16px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                        text-align: left;
+                        color: #555; /* Soft gray color */
+                        }
+
+                        .member-info strong {
+                        font-weight: bold;
+                        }
+
+                        h2 {
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: #fff;
+                        background-color: #007bff;
+                        padding: 10px;
+                        text-align: center;
+                        border-radius: 8px;
+                        margin-top: 0;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .quote-box {
+                        margin-top: 30px;
+                        padding: 20px;
+                        text-align: center;
+                        font-style: italic;
+                        font-size: 18px;
+                        color: #555;
+                        background-color: #f9f9f9;
+                        border-left: 5px solid #6FAF98;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                        }
+
+                    </style>
+                    <div class="member-info">
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Name :</strong>
+                        <t t-esc="member.name"/>
+                    </div>
+                    <div class="member-info">
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Age :</strong>
+                        <t t-esc="member.age"/>
+                    </div>
+                    <div class="member-info">
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Phone :</strong>
+                        <t t-esc="member.phone"/>
+                    </div>
+                    <div class="member-info">
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Email :</strong>
+                        <t t-esc="member.email"/>
+                    </div>
+                    <div class="member-info">
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Address :</strong>
+                        <t t-esc="member.address"/>
+                    </div>
+                    <div class="member-info">
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Gender :</strong>
+                        <t t-esc="member.gender"/>
+                    </div>
+                    <div class="member-info">
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">State :</strong>
+                        <t t-esc="member.state"/>
+                    </div>
+                    <div class="member-info">
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Notes :</strong>
+                        <t t-esc="member.notes"/>
+                    </div>
+
+                    <hr style="border: 3px solid #000;"/>
+
+                    <p style="text-align: center; font-size: 25px; font-weight: bold; color: #6FAF98;">
+                        Details of registered member
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="font-size: 15px; font-weight: bold;">Client's private gym</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: bold;">Gym</td>
+                                <td>
+                                    <t t-esc="member.gym_id.name"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="font-size: 15px; font-weight: bold;">Client's Private Trainer
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: bold;">Trainer</td>
+                                <td>
+                                    <t t-esc="member.trainer_id.name"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <hr style="border: 3px solid #000;"/>
+
+                    <!-- Table for One2Many field -->
+                    <p style="text-align: center; font-size: 24px; font-weight: bold; color: #6FAF98;">
+                        Detailed health history of the selected member,
+                        including weight, height,
+                        body mass index (BMI),
+                        health status,
+                        and any additional notes.
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Weight (kg)</th>
+                                <th>Height (m)</th>
+                                <th>bmi</th>
+                                <th>Health Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="member.health_ids" t-as="health">
+                                <tr>
+                                    <td>
+                                        <t t-esc="health.weight"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="health.height"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="health.bmi"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="health.health_status"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="health.notes"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <hr style="border: 3px solid #000;"/>
+
+                    <!-- Table for One2Many field -->
+                    <p style="text-align: center; font-size: 24px; font-weight: bold; color: #6FAF98; margin-bottom: 15px;">
+                        Member's subscription details, including subscription type, fees, and status.
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Subscription Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Duration (days)</th>
+                                <th>Subscription Fee</th>
+                                <th>Subscription Status</th>
+                                <th>Auto Renewal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="member.subscription_ids" t-as="subscription"/>
+                            <tr>
+                                <td>
+                                    <t t-esc="subscription.subscription_type"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.start_date"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.end_date"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.duration"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.subscription_fee"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.state"/>
+                                </td>
+                                <td>
+                                    <t t-esc="subscription.auto_renewal"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="quote-box">
+                        <p>
+                            "The only way to achieve your fitness goals is to take the first step and keep moving
+                            forward."
+                        </p>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

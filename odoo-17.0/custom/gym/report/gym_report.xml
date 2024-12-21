@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_gym" model="ir.actions.report">
+        <field name="name">Gym Report</field>
+        <field name="model">gym.gym</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gym.gym_report_template</field>
+        <field name="report_file">gym.gym_report_template</field>
+        <field name="binding_model_id" ref="model_gym_gym"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="gym_report_template">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <h2>
+                        Gym Report
+                    </h2>
+                    <style>
+                        table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                        }
+
+                        table, th, td {
+                        border: 1px solid #ddd;
+                        }
+
+                        th {
+                        background-color: #f4f4f4;
+                        color: #333;
+                        padding: 8px;
+                        text-align: center;
+                        }
+
+                        td {
+                        padding: 8px;
+                        text-align: left;
+                        }
+
+                        p{
+                        font-size: 25px;
+                        color: #1E90FF;
+                        font-weight: bold;
+                        margin-bottom: 15px;
+                        border-radius: 8px;
+                        margin-top: 0;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+
+                        h2 {
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: #fff;
+                        background-color: #007bff;
+                        padding: 10px;
+                        text-align: center;
+                        border-radius: 8px;
+                        margin-top: 0;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+
+                        div{
+                        margin-bottom: 10px;
+                        font-size: 18px;
+                        }
+
+                        strong{
+                        color: #000;
+                        }
+
+                        .quote {
+                        font-size: 18px;
+                        font-style: italic;
+                        color: #555;
+                        margin-top: 20px;
+                        text-align: center;
+                        padding: 10px;
+                        border-top: 1px solid #ddd;
+                        border-left: 4px solid #4CAF50;
+                        background-color: #f9f9f9;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .total-count {
+                        font-size: 18px;
+                        color: #1E90FF;
+                        font-weight: bold;
+                        margin-top: 10px;
+                        margin-bottom: 20px;
+                        text-align: right;
+                        border-top: 1px solid #ddd;
+                        padding-top: 10px;
+                        }
+                    </style>
+
+                    <p>Owner Details</p>
+                    <div>
+                        <strong>Reference:</strong>
+                        <t t-esc="o.ref"/>
+                    </div>
+
+                    <div>
+                        <strong>Owner:</strong>
+                        <t t-esc="o.owner_id.name"/>
+                    </div>
+
+                    <div>
+                        <strong>Phone:</strong>
+                        <t t-esc="o.phone_owner"/>
+                    </div>
+
+                    <div>
+                        <strong>Email:</strong>
+                        <t t-esc="o.email_owner"/>
+                    </div>
+
+                    <p>Gym Details</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Gym Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Location</th>
+                                <th>Rating</th>
+                                <th>Zip Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <t t-esc="o.name"/>
+                                </td>
+                                <td>
+                                    <t t-esc="o.phone"/>
+                                </td>
+                                <td>
+                                    <t t-esc="o.email"/>
+                                </td>
+                                <td>
+                                    <t t-esc="o.location"/>
+                                </td>
+                                <td>
+                                    <t t-esc="o.rating"/>
+                                </td>
+                                <td>
+                                    <t t-esc="o.zip_code"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>Subscribed Members</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Gender</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.member_ids" t-as="member">
+                                <tr>
+                                    <th>
+                                        <t t-esc="member.name"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="member.age"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="member.phone"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="member.email"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="member.gender"/>
+                                    </th>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <p class="total-count">Total Members:
+                        <t t-esc="len(o.member_ids)"/>
+                    </p>
+
+                    <p>Gym Trainers</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Trainer Name</th>
+                                <th>Age</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Gender</th>
+                                <th>Expertise</th>
+                                <th>Certifications</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.trainer_ids" t-as="trainer">
+                                <tr>
+                                    <th>
+                                        <t t-esc="trainer.name"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="trainer.age"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="trainer.phone"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="trainer.email"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="trainer.gender"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="trainer.expertise"/>
+                                    </th>
+                                    <th>
+                                        <t t-esc="trainer.certifications"/>
+                                    </th>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <p class="total-count">Total Trainer
+                        <t t-esc="len(o.trainer_ids)"/>
+                    </p>
+
+                    <div class="quote">
+                        "The only bad workout is the one that didn’t happen."
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

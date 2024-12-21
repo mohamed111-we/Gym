@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_gym_trainer" model="ir.actions.report">
+        <field name="name">Trainer Report</field>
+        <field name="model">gym.trainer</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gym.gym_trainer_report_template</field>
+        <field name="report_file">gym.gym_trainer_report_template</field>
+        <field name="binding_model_id" ref="gym.model_gym_trainer"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="gym_trainer_report_template">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="trainer">
+                <div class="page">
+                    <h2>Gym Trainer Report</h2>
+                    <style>
+                        table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                        }
+
+                        table, th, td {
+                        border: 1px solid #ddd;
+                        }
+
+                        th {
+                        background-color: #f4f4f4;
+                        color: #333;
+                        padding: 8px;
+                        text-align: center;
+                        }
+
+                        td {
+                        padding: 8px;
+                        text-align: left;
+                        }
+
+                        h2 {
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: #fff;
+                        background-color: #007bff;
+                        padding: 10px;
+                        text-align: center;
+                        border-radius: 8px;
+                        margin-top: 0;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .quote {
+                        font-style: italic;
+                        font-size: 16px;
+                        color: #555;
+                        margin-top: 20px;
+                        text-align: center;
+                        border-top: 2px dashed #007bff;
+                        padding-top: 10px;
+                        }
+
+                        .quote p {
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #007bff;
+                        }
+
+                        .section-title {
+                        font-size: 25px;
+                        font-weight: bold;
+                        color: #6FAF98;
+                        text-decoration: underline;
+                        margin-bottom: 20px;
+                        }
+                    </style>
+
+                    <p class="section-title">Trainer Details</p>
+
+                    <div>
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Trainer Name:</strong>
+                        <t t-esc="trainer.name"/>
+                    </div>
+
+                    <div>
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Gym:</strong>
+                        <t t-esc="trainer.gym_id.name"/>
+                    </div>
+
+                    <div>
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Phone:</strong>
+                        <t t-esc="trainer.phone"/>
+                    </div>
+
+                    <div>
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Email:</strong>
+                        <t t-esc="trainer.email"/>
+                    </div>
+
+                    <div>
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Age:</strong>
+                        <t t-esc="trainer.age"/>
+                    </div>
+
+                    <div>
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Gender:</strong>
+                        <t t-esc="trainer.gender"/>
+                    </div>
+
+                    <hr style="border: 3px solid #000;"/>
+
+                    <p class="section-title">Specialties</p>
+
+                    <div>
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Expertise:</strong>
+                        <t t-esc="trainer.expertise"/>
+                    </div>
+
+                    <div>
+                        <strong style="font-weight: bold; font-size: 18px; color: black;">Certifications:</strong>
+                        <t t-esc="trainer.certifications"/>
+                    </div>
+
+                    <hr style="border: 3px solid #000;"/>
+
+                    <p class="section-title">Joint Customers with Captain</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="trainer.member_ids" t-as="member">
+                                <tr>
+                                    <td>
+                                        <t t-esc="member.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="member.phone"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="member.email"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="quote">
+                        <p>"A good trainer does not just teach; they inspire, motivate, and push their clients to be the
+                            best version of themselves!"
+                        </p>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

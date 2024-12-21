@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="gym_form" model="ir.ui.view">
+            <field name="name">gym.form</field>
+            <field name="model">gym.gym</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_draft" string="Draft" type="object" class="btn-success"
+                                invisible="state == 'draft'"/>
+                        <button name="action_open" string="Open" type="object" class="oe_highlight"
+                                invisible="state == 'open'"/>
+                        <button name="action_closed" string="Closed" type="object" class="oe_highlight"
+                                invisible="state == 'closed'"/>
+                        <button name="action_inactive" string="Inactive" type="object" class="oe_highlight"
+                                invisible="state == 'inactive'"/>
+                        <button string="Create Member" type="object" name="action_open_create_member_wizard"
+                                class="oe_highlight"/>
+                        <button string="Create Trainer" type="object" name="action_open_create_trainer_wizard"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_member"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-user"
+                                    invisible="member_count == 0">
+                                <field name="member_count" widget="statinfo" string="Member"/>
+                            </button>
+                            <button name="action_view_trainer"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-user"
+                                    invisible="trainer_count == 0">
+                                <field name="trainer_count" widget="statinfo" string="Trainer"/>
+                            </button>
+                        </div>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <label for="ref"/>
+                            <h1>
+                                <field name="ref"/>
+                            </h1>
+                        </div>
+                        <group string="Owner Details">
+                            <field name="owner_id"/>
+                            <field name="phone_owner"/>
+                            <field name="email_owner"/>
+                        </group>
+                        <separator/>
+                        <group string="Gym Details">
+                            <group>
+                                <field name="name"/>
+                                <field name="phone"/>
+                                <field name="email"/>
+                                <field name="location"/>
+                                <field name="rating"/>
+                            </group>
+                            <group>
+                                <field name="zip_code"/>
+                                <field name="description"/>
+                                <field name="active" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Member">
+                                <field name="member_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="age"/>
+                                        <field name="phone"/>
+                                        <field name="email"/>
+                                        <field name="gender"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Trainer">
+                                <field name="trainer_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="age"/>
+                                        <field name="phone"/>
+                                        <field name="email"/>
+                                        <field name="gender"/>
+                                        <field name="expertise"/>
+                                        <field name="certifications"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="gym_tree" model="ir.ui.view">
+            <field name="name">gym.tree</field>
+            <field name="model">gym.gym</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="owner_id"/>
+                    <field name="phone_owner" optional="hide"/>
+                    <field name="email_owner" optional="hide"/>
+                    <field name="name"/>
+                    <field name="phone" optional="hide"/>
+                    <field name="email" optional="hide"/>
+                    <field name="location" optional="show"/>
+                    <field name="rating" optional="show"/>
+                    <field name="zip_code" optional="hide"/>
+                    <field name="description" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="gym_search" model="ir.ui.view">
+            <field name="name">gym.search</field>
+            <field name="model">gym.gym</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="location"/>
+                    <separator/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <filter string="open" name="open_gym" domain="[('state', '=', 'open')]"/>
+                    <filter string="Closed" name="closed_gym" domain="[('state', '=', 'closed')]"/>
+                    <filter string="Inactive" name="inactive_gym" domain="[('state', '=', 'inactive')]"/>
+                    <separator/>
+                    <group string="Group By">
+                        <filter string="Gym Name" name="name" domain="[]" context="{'group_by':'name'}"/>
+                        <filter string="Owner" name="owner_id" domain="[]" context="{'group_by':'owner_id'}"/>
+                        <filter string="Location" name="location" domain="[]" context="{'group_by':'location'}"/>
+                        <filter string="State" name="state" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="gym_kanban" model="ir.ui.view">
+            <field name="name">gym.kanban</field>
+            <field name="model">gym.gym</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="o_kanban_card">
+                                <div class="o_kanban_details">
+                                    <strong>
+                                        Gym Name :
+                                        <field name="name"/>
+                                    </strong>
+                                    <p>
+                                        Owner:
+                                        <field name="owner_id"/>
+                                    </p>
+                                    <p>
+                                        Location:
+                                        <field name="location"/>
+                                    </p>
+                                    <p>
+                                        Rating:
+                                        <field name="rating"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="gym_pivot" model="ir.ui.view">
+            <field name="name">gym.pivot</field>
+            <field name="model">gym.gym</field>
+            <field name="arch" type="xml">
+                <pivot string="Gym Analysis" sample="1">
+                    <field name="state" type="col"/> <!-- Analyzing gym by state -->
+                    <field name="location" type="row"/> <!-- Grouping by location -->
+                    <field name="rating" type="measure"/> <!-- Aggregating average or total rating -->
+                    <field name="member_count" type="measure"/> <!-- Counting members -->
+                    <field name="trainer_count" type="measure"/> <!-- Counting trainers -->
+                </pivot>
+            </field>
+        </record>
+
+        <record id="gym_graph" model="ir.ui.view">
+            <field name="name">gym.graph</field>
+            <field name="model">gym.gym</field>
+            <field name="arch" type="xml">
+                <graph string="Gym Analysis" type="bar" sample="1">
+                    <field name="location" type="row"/>
+                    <field name="rating" type="measure"/>
+                    <field name="member_count" type="measure"/>
+                    <field name="trainer_count" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+
+        <record id="gym_action" model="ir.actions.act_window">
+            <field name="name">Gym</field>
+            <field name="res_model">gym.gym</field>
+            <field name="view_mode">tree,form,kanban,pivot,graph</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create A New Gym...!
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+                id="menu_gym_root"
+                name="Gym Management"
+                sequence="10"/>
+
+        <menuitem
+                id="menu_gym_main"
+                name="Gym Details"
+                parent="menu_gym_root"
+                sequence="10"/>
+
+        <menuitem
+                id="menu_gym"
+                name="Gym"
+                action="gym_action"
+                parent="menu_gym_main"
+                sequence="10"/>
+    </data>
+</odoo>

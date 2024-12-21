@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="view_create_member_wizard_form" model="ir.ui.view">
+            <field name="name">create.member.wizard.form</field>
+            <field name="model">create.member.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="gym_id"/>
+                                <field name="trainer_id"/>
+                                <field name="phone"/>
+                            </group>
+                            <group>
+                                <field name="email"/>
+                                <field name="address"/>
+                                <field name="gender"/>
+                                <field name="notes"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_create_member" string="Create" class="oe_highlight" type="object"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="create_member_wizard_action" model="ir.actions.act_window">
+            <field name="name">create.member.wizard.form</field>
+            <field name="res_model">create.member.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+    </data>
+</odoo>
